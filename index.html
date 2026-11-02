@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0907">
+<title>FOOD CINEMA — Movies Without Limits</title>
+<style>
+:root{--bg:#0b0907;--panel:#15110d;--panel2:#1c1711;--gold:#d6ad61;--gold2:#f2d69a;--text:#f8f2e8;--muted:#a69b89;--line:#382d1e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Arial,sans-serif}
+header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 max(5vw,20px);border-bottom:1px solid #ffffff12;background:#0b0907ed;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
+.logo{font-size:23px;letter-spacing:2px;font-weight:950;color:var(--gold2)}.logo span{color:#fff}
+nav{display:flex;gap:23px}nav a{color:#d8cdbb;text-decoration:none;font-size:13px}nav a:hover{color:var(--gold2)}
+.btn{border:1px solid var(--gold);background:var(--gold);color:#171008;border-radius:5px;padding:11px 16px;font-weight:850;cursor:pointer}.btn.ghost{background:transparent;color:var(--gold2)}.btn:disabled{opacity:.4;cursor:not-allowed}
+main{max-width:1240px;margin:auto;padding:0 24px}
+.hero{margin:25px 0 30px;min-height:440px;border:1px solid #6c512b;border-radius:13px;overflow:hidden;position:relative;display:flex;align-items:end;background:linear-gradient(90deg,#090807 0%,#090807df 43%,#09080728 100%),linear-gradient(0deg,#090807 0%,transparent 60%),url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1800&q=85') center/cover}
+.hero-content{padding:clamp(25px,6vw,65px);max-width:690px}.eyebrow{font-size:11px;letter-spacing:3px;color:var(--gold2);font-weight:900}.hero h1{font-family:Georgia,serif;font-size:clamp(43px,7vw,76px);line-height:.98;margin:14px 0}.hero p{color:#d0c4b3;line-height:1.7;max-width:510px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.notice{border:1px solid #6b512a;background:#211a10;color:#e9d6b1;padding:13px 15px;border-radius:7px;font-size:13px;line-height:1.55;margin:16px 0}
+.section{margin:36px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px}.section h2{font: bold 27px Georgia,serif;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:5px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:17px 0}.chip{background:#17130e;border:1px solid var(--line);color:#d7c9b4;padding:9px 14px;border-radius:30px;cursor:pointer;font-size:12px}.chip.active{background:var(--gold);border-color:var(--gold);color:#160f06;font-weight:900}
+.search{width:min(100%,330px);padding:12px 14px;border-radius:5px;border:1px solid var(--line);background:#15110d;color:#fff;outline:none}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.movie{background:var(--panel);border:1px solid #ffffff12;border-radius:8px;overflow:hidden;transition:.2s}.movie:hover{transform:translateY(-4px);border-color:#9d7840}.poster{height:205px;display:flex;align-items:center;justify-content:center;font-size:58px;position:relative;background:radial-gradient(circle at 50% 30%,#59401e,#17110a 68%)}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#100c08,transparent 55%)}.poster-label{position:absolute;bottom:12px;left:13px;z-index:1;color:var(--gold2);font-size:10px;letter-spacing:2px;font-weight:900}.movie-body{padding:13px}.movie h3{font-size:16px;margin:0 0 7px}.meta{color:var(--muted);font-size:11px}.movie-actions{display:flex;gap:7px;margin-top:13px}.movie-actions button{flex:1;padding:9px 7px;font-size:11px}
+.empty{grid-column:1/-1;text-align:center;padding:35px;color:var(--muted);border:1px dashed var(--line);border-radius:8px}
+.earning{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.earn-card{background:linear-gradient(145deg,#20190f,#110e0a);border:1px solid var(--line);padding:20px;border-radius:9px}.earn-card b{color:var(--gold2);display:block;margin:9px 0}.earn-card p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
+footer{border-top:1px solid var(--line);margin-top:50px;padding:25px max(5vw,20px);color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.modal{display:none;position:fixed;inset:0;background:#000d;z-index:20;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.dialog{width:min(560px,100%);background:#17120c;border:1px solid #8a6938;border-radius:10px;padding:25px;position:relative}.close{position:absolute;right:15px;top:12px;background:transparent;color:#fff;border:0;font-size:25px;cursor:pointer}.dialog h2{font:30px Georgia,serif;color:var(--gold2)}.dialog p{color:#c9bcaa;line-height:1.65;font-size:14px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}nav{gap:12px}.hero{min-height:380px}}
+@media(max-width:580px){header{height:auto;min-height:65px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}nav{order:3;width:100%;justify-content:space-between;padding-top:8px}.hero{min-height:390px}.grid{gap:10px}.poster{height:150px}.earning{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.search{width:100%}}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">FOOD <span>CINEMA</span></div>
+ <nav><a href="#home">Home</a><a href="#movies">Movies</a><a href="#languages">Languages</a><a href="#earn">Partner with us</a></nav>
+ <button class="btn ghost" onclick="showInfo('Sign in','Account registration will be enabled after a secure backend is connected.')">Sign In</button>
+</header>
+<main>
+<section class="hero" id="home">
+ <div class="hero-content">
+  <div class="eyebrow">THE WORLD OF CINEMA</div>
+  <h1>Stories worth<br><i style="color:var(--gold2)">staying up for.</i></h1>
+  <p>Discover Hindi, South Indian and Hollywood cinema in one place. Watch and download titles only where the rights holder has authorized it.</p>
+  <div class="actions"><button class="btn" onclick="document.getElementById('movies').scrollIntoView({behavior:'smooth'})">Explore Movies</button><button class="btn ghost" onclick="showInfo('Coming soon','A verified catalogue of licensed films and authorized trailers will appear here.')">How it works</button></div>
+ </div>
+</section>
+<div class="notice"><b>FOOD CINEMA preview:</b> This is a front-end website prototype. The sample catalogue is illustrative; no commercial films are hosted here. Before publishing any film, trailer, poster or download, obtain the appropriate distribution and streaming rights. Watch/download controls below show the planned user experience only.</div>
+
+<section class="section" id="movies">
+ <div class="section-head"><div><h2>Explore the collection</h2><div class="sub">A premium home for cinema lovers</div></div><input class="search" id="search" placeholder="Search movie or language..." oninput="render()"></div>
+ <div class="filters" id="filters">
+  <button class="chip active" data-filter="All">All Movies</button><button class="chip" data-filter="Hindi">Hindi</button><button class="chip" data-filter="South">South Indian</button><button class="chip" data-filter="Hollywood">Hollywood</button>
+ </div>
+ <div class="grid" id="catalog"></div>
+</section>
+<section class="section" id="languages">
+ <div class="section-head"><div><h2>Movies in your language</h2><div class="sub">Build a catalogue across regions and genres</div></div></div>
+ <div class="earning">
+  <div class="earn-card">🇮🇳 <b>Hindi Cinema</b><p>Bollywood, independent films, classics and dubbed titles—with proper streaming permissions.</p></div>
+  <div class="earn-card">🎞️ <b>South Indian Cinema</b><p>Telugu, Tamil, Malayalam and Kannada films, including authorized dubbed versions.</p></div>
+  <div class="earn-card">🌎 <b>Hollywood</b><p>International releases, independent cinema and licensed classics.</p></div>
+ </div>
+</section>
+<section class="section" id="earn">
+ <div class="section-head"><div><h2>How FOOD CINEMA can earn</h2><div class="sub">Revenue options once the platform is legally and technically ready</div></div></div>
+ <div class="earning">
+  <div class="earn-card">📺 <b>Advertising</b><p>Ad revenue from approved ad networks, subject to their policies and sufficient original/authorized content.</p></div>
+  <div class="earn-card">👑 <b>Subscriptions</b><p>Offer paid plans for premium access to a licensed film catalogue.</p></div>
+  <div class="earn-card">🎟️ <b>Rentals & partnerships</b><p>Earn through authorized rentals or affiliate partnerships with legitimate streaming services.</p></div>
+ </div>
+</section>
+</main>
+<footer><span>© 2026 FOOD CINEMA. All rights reserved.</span><span>Privacy • Terms • Copyright & takedown contact (to be configured)</span></footer>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="dialog"><button class="close" onclick="closeModal()">×</button><div class="eyebrow">FOOD CINEMA</div><h2 id="modalTitle">Coming soon</h2><p id="modalText"></p><button class="btn" onclick="closeModal()">Got it</button></div></div>
+<script>
+const films=[
+ {title:"Hindi Feature Slot",lang:"Hindi",detail:"Bollywood / Hindi",emoji:"🎭",type:"Catalogue slot"},
+ {title:"Hindi Classics Slot",lang:"Hindi",detail:"Classic & independent",emoji:"🎬",type:"Catalogue slot"},
+ {title:"Telugu Feature Slot",lang:"South",detail:"Telugu cinema",emoji:"🎥",type:"Catalogue slot"},
+ {title:"Tamil Feature Slot",lang:"South",detail:"Tamil cinema",emoji:"🎞️",type:"Catalogue slot"},
+ {title:"Malayalam Feature Slot",lang:"South",detail:"Malayalam cinema",emoji:"🎭",type:"Catalogue slot"},
+ {title:"Kannada Feature Slot",lang:"South",detail:"Kannada cinema",emoji:"📽️",type:"Catalogue slot"},
+ {title:"Hollywood Feature Slot",lang:"Hollywood",detail:"English / International",emoji:"🌆",type:"Catalogue slot"},
+ {title:"Indie Film Slot",lang:"Hollywood",detail:"Independent cinema",emoji:"⭐",type:"Catalogue slot"}
+];
+let current="All";
+document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');current=b.dataset.filter;render()}));
+function render(){let q=document.getElementById('search').value.toLowerCase();let list=films.filter(f=>(current==="All"||f.lang===current)&&(f.title+" "+f.lang+" "+f.detail).toLowerCase().includes(q));document.getElementById('catalog').innerHTML=list.length?list.map((f,i)=>`<article class="movie"><div class="poster"><span>${f.emoji}</span><div class="poster-label">COMING TO THE CATALOGUE</div></div><div class="movie-body"><h3>${f.title}</h3><div class="meta">${f.detail} · ${f.type}</div><div class="movie-actions"><button class="btn" onclick="showInfo('Watch ${f.title}','This catalogue slot is not a movie. Add a film for which FOOD CINEMA has valid streaming rights, then connect its authorized video source.')">▶ Watch</button><button class="btn ghost" onclick="showInfo('Download unavailable','Downloads will be enabled only for films whose rights holder expressly permits downloads.')">↓ Download</button></div></div></article>`).join(''):'<div class="empty">No matching titles. Try another search.</div>'}
+function showInfo(t,m){document.getElementById('modalTitle').textContent=t;document.getElementById('modalText').textContent=m;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+render();
+</script>
+</body></html>
